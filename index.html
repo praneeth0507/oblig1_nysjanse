@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bestill kinobilletter</title>
+</head>
+<script>
+    const billetter = [];
+
+    function kjopBillett() {
+
+        const film = document.getElementById("slctFilm");
+        const antall = document.getElementById("inpAntall");
+        const fornavn = document.getElementById("inpFornavn");
+        const etternavn = document.getElementById("inpEtternavn");
+        const tlfnr = document.getElementById("inpTelefonnr");
+        const epost = document.getElementById("inpEpost");
+
+        let feilFilm = document.getElementById("nullFilm");
+        let feilAntall = document.getElementById("nullAntall");
+        let feilFornavn = document.getElementById("nullFornavn");
+        let feilEtternavn = document.getElementById("nullEtternavn");
+        let feilTlfnr = document.getElementById("nullTelefonnr");
+        let feilEpost = document.getElementById("nullEpost");
+
+        const filmer = document.getElementById("tblFilmer");
+
+        const sjekkTlfnr = Number(tlfnr.value);
+
+        let harFeil = false;
+
+        if (film.value === "Velg Film") {
+            feilFilm.innerHTML = "Du må velge en film";
+            harFeil = true;
+        }
+
+        if (antall.value === "") {
+            feilAntall.innerHTML = "Du må skrive noe i antall";
+            harFeil = true;
+        }
+
+        if (!/^[a-zA-ZæøåÆØÅ\s]+$/.test(fornavn.value)) {
+            feilFornavn.innerHTML = "Fornavn kan bare inneholde bokstaver og mellomrom";
+            harFeil = true;
+        }
+
+        if (!/^[a-zA-ZæøåÆØÅ\s]+$/.test(etternavn.value)) {
+            feilEtternavn.innerHTML = "Etternavn kan bare inneholde bokstaver og mellomrom";
+            harFeil = true;
+        }
+
+        if (isNaN(sjekkTlfnr)) {
+            feilTlfnr.innerHTML = "Du må skrive inn tall i tlfnr ";
+            harFeil = true;
+        }
+
+        if (tlfnr.value === "") {
+            feilTlfnr.innerHTML = "Du må skrive noe i telefonnummer, og ";
+            harFeil = true;
+        }
+
+        if (tlfnr.value.length !== 8) {
+            feilTlfnr.innerHTML += "Du må skrive et telefonnummer med 8 siffer";
+            harFeil = true;
+        }
+
+        if (epost.value === "") {
+            feilEpost.innerHTML = "Du må skrive noe i Epost";
+            harFeil = true;
+        }
+
+        if (harFeil) {
+            return; // Avbryt funksjonen hvis det er feil
+        }
+
+        billetter.push({
+            Film: film.value,
+            Antall: antall.value,
+            Fornavn: fornavn.value,
+            Etternavn: etternavn.value,
+            Telefonnr: tlfnr.value,
+            Epost: epost.value
+        });
+
+        filmer.innerHTML = "<tr><th>Film</th>" + "<th>Antall</th>" + "<th>Fornavn</th>" + "<th>Etternavn</th>" + "<th>Telefonnummer</th>" + "<th>Epost</th></tr>";
+
+        for (let i = 0; i < billetter.length; i++) {
+            filmer.innerHTML += "<tr><td>" + billetter[i].Film + "</td><td>" + billetter[i].Antall + "</td><td>" + billetter[i].Fornavn + "</td><td>" + billetter[i].Etternavn + "</td><td>" + billetter[i].Telefonnr + "</td><td>" + billetter[i].Epost + "</td></tr>";
+        }
+
+    }
+    if (film.value !== "Velg Film") {
+        feilFilm.innerHTML = "";
+    }
+    if (antall.value !== "") {
+        feilAntall.innerHTML = "";
+    }
+    if (fornavn.value !== "") {
+        feilFornavn.innerHTML = "";
+    }
+    if (etternavn.value !== "") {
+        feilEtternavn.innerHTML = "";
+    }
+
+    if (tlfnr.value !== "" && tlfnr.value.length == 8) {
+        feilTlfnr.innerHTML = "";
+    }
+    if (epost.value !== "") {
+        feilEpost.innerHTML = "";
+    }
+    film.value = "Velg Film";
+    antall.value = "";
+    fornavn.value = "";
+    etternavn.value = "";
+    tlfnr.value = "";
+    epost.value = "";
+
+
+    const filmer = document.getElementById("tblFilmer");
+    filmer.innerHTML = "";
+
+
+    function slettBillett() {
+        const filmer = document.getElementById("tblFilmer");
+
+        billetter.splice(0, billetter.length);
+        filmer.innerHTML = "";
+
+
+    }
+</script>
+<style>
+    p {
+        display: inline-block;
+        color: red;
+    }
+
+    input {
+        margin-left: 15px;
+    }
+
+    button {
+        margin-top: 15px;
+    }
+
+    table, th, td {
+        border: 1px black solid;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+</style>
+<body>
+<h1>Bestillinger av kinobilletter</h1>
+<label for="slctFilm">Velg film her</label>
+<select id="slctFilm">
+    <option>Velg Film</option>
+    <option>Black Widow</option>
+    <option>Fast & Furious 9</option>
+    <option>The Batman</option>
+    <option>The Boss Baby: Family Business</option>
+</select>
+<p id="nullFilm"></p><br>
+
+<label for="inpAntall">Antall<input id="inpAntall" type="number" min="1" style="width: 50px"></label>
+<p id="nullAntall"></p> <br>
+<label for="inpFornavn">Fornavn<input id="inpFornavn" type="text" pattern="[a-zA-ZæøåÆØÅ\s]+" title="Fornavn kan bare inneholde bokstaver og mellomrom"></label>
+<p id="nullFornavn"></p> <br>
+<label for="inpEtternavn">Etternavn<input id="inpEtternavn" type="text" pattern="[a-zA-ZæøåÆØÅ\s]+" title="Etternavn kan bare inneholde bokstaver og mellomrom"></label>
+<p id="nullEtternavn"></p> <br>
+<label for="inpTelefonnr">Telefonnr<input id="inpTelefonnr" type="text" pattern="[0-9]{8}" title="Telefonnr må være 8 siffer"></label>
+<p id="nullTelefonnr"></p><br>
+<label for="inpEpost">Epost<input id="inpEpost" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Epost må være på formatet eksempel@eksempel.com"></label>
+<p id="nullEpost"></p><br>
+
+<button onclick="kjopBillett()">Kjøp billett</button>
+
+<h2>Alle biletter</h2>
+
+<table id="tblFilmer"></table>
+
+<button id="slettKnp" onclick="slettBillett()">Slett alle billettene</button>
+
+</body>
+</html>
